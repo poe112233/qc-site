@@ -1,0 +1,20 @@
+name: Set CNAME
+on:
+  workflow_dispatch:
+jobs:
+  set-cname:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ github.app_id }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - run: |
+          # Add CNAME file
+          echo "qc.ores.cc" > CNAME
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CNAME
+          git commit -m "Add CNAME for qc.ores.cc"
+          git push
